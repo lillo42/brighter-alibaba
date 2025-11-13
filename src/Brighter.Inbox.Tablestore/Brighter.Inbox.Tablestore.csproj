@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>$(BrighterTargetFrameworks)</TargetFrameworks>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aliyun.TableStore.SDK" />
+      <PackageReference Include="Paramore.Brighter" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Brighter.Tablestore\Brighter.Tablestore.csproj" />
+    </ItemGroup>
+
+</Project>

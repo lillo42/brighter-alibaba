@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Brighter.Transformers.Alibaba</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitHubActionsTestLogger" />
+    <PackageReference Include="TUnit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Brighter.Inbox.Tablestore\Brighter.Inbox.Tablestore.csproj" />
+    <ProjectReference Include="..\..\src\Brighter.Transformers.Alibaba\Brighter.Transformers.Alibaba.csproj" />
+  </ItemGroup>
+
+</Project>
