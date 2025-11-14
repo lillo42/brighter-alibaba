@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Aliyun.OTS;
 using Aliyun.OTS.DataModel;
 using Aliyun.OTS.DataModel.Filter;
 using Aliyun.OTS.Request;
@@ -17,6 +18,7 @@ namespace Brighter.Inbox.Tablestore;
 
 public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
 {
+    private const string ErrorCodeConditionCheckFail = "OTSConditionCheckFail";
     private readonly IAmATablestoreConnectionProvider _connectionProvider;
     private readonly TablestoreConfiguration _configuration;
     private readonly TablestoreTable _table;
@@ -66,10 +68,9 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
                 new Condition(RowExistenceExpectation.EXPECT_NOT_EXIST),
                 ToPrimaryKey(command.Id), ToColumns(contextKey, command)));
         }
-        catch (Exception e)
+        catch (OTSServerException ex) when(ex.ErrorCode == ErrorCodeConditionCheckFail)
         {
-            // Ignrore duplicate inserts
-            Console.WriteLine(e);
+            // Ignore duplicate inserts
         }
         finally
         {
@@ -103,13 +104,13 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
                 Filter = new SingleColumnValueFilter("ContextKey", CompareOperator.EQUAL, new ColumnValue(contextKey))
             }));
 
+            if (response.PrimaryKey.Count == 0)
+            {
+                throw new RequestNotFoundException<T>(id);
+            }
+
             return JsonSerializer.Deserialize<T>(response.Row.AttributeColumns["Body"].BinaryValue,
                 JsonSerialisationOptions.Options)!;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new RequestNotFoundException<T>(id);
         }
         finally
         {
@@ -140,15 +141,10 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
             var response = client.GetRow(new GetRowRequest(new SingleRowQueryCriteria(_table.Name)
             {
                 RowPrimaryKey = ToPrimaryKey(id),
-                Filter = new SingleColumnValueFilter("ContextKey", CompareOperator.EQUAL, new ColumnValue(contextKey))
+                Filter = new SingleColumnValueFilter("ContextKey", CompareOperator.EQUAL, new ColumnValue(contextKey)),
             }));
 
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return false;
+            return response.PrimaryKey.Count == 1;
         }
         finally
         {
@@ -173,13 +169,6 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
         columns.Add("ContextKey", new ColumnValue(contextKey));
         columns.Add("Timestamp", new ColumnValue(_configuration.TimeProvider.GetUtcNow().ToRfc3339()));
         columns.Add("Type", new ColumnValue(typeof(T).FullName));
-        long ttl = -1;
-        if (_table.TimeToLive.HasValue)
-        {
-            ttl = Convert.ToInt64(_table.TimeToLive.Value.TotalSeconds);
-        }
-        
-        columns.Add("Ttl", new ColumnValue(ttl));
         return columns;
     }
 
@@ -204,13 +193,13 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
         {
             var client = _connectionProvider.GetTablestoreClient();
             await client.PutRowAsync(new PutRowRequest(_table.Name,
-                new Condition(RowExistenceExpectation.EXPECT_NOT_EXIST),
-                ToPrimaryKey(command.Id), ToColumns(contextKey, command)))
+                    new Condition(RowExistenceExpectation.EXPECT_NOT_EXIST),
+                    ToPrimaryKey(command.Id), ToColumns(contextKey, command)))
                 .ConfigureAwait(ContinueOnCapturedContext);
         }
-        catch (Exception e)
+        catch (OTSServerException ex) when (ex.ErrorCode == ErrorCodeConditionCheckFail)
         {
-            // Ignrore duplicate inserts
+            // Ignore duplicate inserts
         }
         finally
         {
@@ -246,13 +235,13 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
             }))
                 .ConfigureAwait(ContinueOnCapturedContext);
 
+            if (response.PrimaryKey.Count == 0)
+            {
+                throw new RequestNotFoundException<T>(id);
+            }
+
             return JsonSerializer.Deserialize<T>(response.Row.AttributeColumns["Body"].BinaryValue,
                 JsonSerialisationOptions.Options)!;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new RequestNotFoundException<T>(id);
         }
         finally
         {
@@ -287,12 +276,7 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
                 Filter = new SingleColumnValueFilter("ContextKey", CompareOperator.EQUAL, new ColumnValue(contextKey))
             })).ConfigureAwait(ContinueOnCapturedContext);
 
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return false;
+            return response.PrimaryKey.Count == 1;
         }
         finally
         {

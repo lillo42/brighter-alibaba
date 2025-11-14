@@ -32,7 +32,7 @@ public class LargeMessagePayloadWrapTests : IDisposable
         _myCommand = new MyLargeCommand(6000);
 
         _bucketName = $"brightertestbucket-{Guid.NewGuid()}";
-        _luggageStoreOptions = new OssLuggageOptions(AlibabaConfiguration.Endpoint,
+        _luggageStoreOptions = new OssLuggageOptions(AlibabaConfiguration.OssEndpoint,
             AlibabaConfiguration.AccessKey, AlibabaConfiguration.SecretKey)
         {
             BucketName = _bucketName

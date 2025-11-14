@@ -2,10 +2,14 @@
 
 namespace Brighter.Tablestore;
 
-public class TablestoreConnectionProvider(TablestoreConfiguration configuration) : IAmATablestoreConnectionProvider
+public class TablestoreConnectionProvider(OTSClient client) : IAmATablestoreConnectionProvider
 {
-    public OTSClient GetTablestoreClient()
+    public TablestoreConnectionProvider(TablestoreConfiguration configuration)
+        : this(new OTSClient(configuration.Configuration))
     {
-        return new OTSClient(configuration.Configuration);
+        
     }
+    
+    public OTSClient GetTablestoreClient() 
+        => client;
 }

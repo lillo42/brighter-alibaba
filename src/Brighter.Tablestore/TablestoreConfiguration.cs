@@ -4,19 +4,10 @@ using Paramore.Brighter.Observability;
 
 namespace Brighter.Tablestore;
 
-public class TablestoreConfiguration(OTSClientConfig config)
+public class TablestoreConfiguration
 {
-    public OTSClientConfig Configuration { get; }
+    public OTSClientConfig? Configuration { get; set; }
 
-    public TablestoreConfiguration(string endPoint, 
-        string accessKeyID,
-        string accessKeySecret,
-        string instanceNam)
-        : this(new OTSClientConfig(endPoint, accessKeyID, accessKeySecret, instanceNam))
-    {
-        
-    }
-    
     public TablestoreTable? Inbox { get; set; }
     
     public TablestoreTable? Outbox { get; set; }

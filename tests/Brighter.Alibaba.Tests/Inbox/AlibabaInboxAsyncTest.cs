@@ -8,14 +8,14 @@ using Paramore.Brighter;
 namespace Brighter.Transformers.Alibaba.Inbox;
 
 [InheritsTests]
-public class AlibabaInboxTest : InboxTests
+public class AlibabaInboxAsyncTest : InboxAsyncTests
 {
     private TablestoreInbox? _inbox;
-    protected override IAmAnInboxSync Inbox => _inbox!;
+    protected override IAmAnInboxAsync Inbox => _inbox!;
 
-    protected override void CreateStore()
+    protected override Task CreateStoreAsync()
     {
-        _inbox = new TablestoreInbox(new TablestoreConfiguration
+         _inbox = new TablestoreInbox(new TablestoreConfiguration
         {
             Configuration = new OTSClientConfig(
                 AlibabaConfiguration.TablestoreEndpoint,
@@ -27,9 +27,11 @@ public class AlibabaInboxTest : InboxTests
                 Name = "inbox",
             }
         });
+
+        return Task.CompletedTask;
     }
 
-    public override void AfterEachTest()
+    public override async Task AfterEachTestAsync()
     {
         var provider = new TablestoreConnectionProvider(new TablestoreConfiguration
         {
@@ -39,14 +41,14 @@ public class AlibabaInboxTest : InboxTests
                 AlibabaConfiguration.SecretKey,
                 "brighter")
         });
-
+        
         var client = provider.GetTablestoreClient();
         foreach (var command in CreatedCommands)
         {
             try
             {
                 var pk = new PrimaryKey{ ["Id"] = new ColumnValue(command.Id) };
-                client.DeleteRow(new DeleteRowRequest(new RowDeleteChange("inbox", pk))
+                await client.DeleteRowAsync(new DeleteRowRequest(new RowDeleteChange("inbox", pk))
                 {
                     Condition = new Condition(RowExistenceExpectation.IGNORE),
                 });

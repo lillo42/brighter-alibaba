@@ -8,7 +8,7 @@ public class LuggageStoreExistsTests
     public async Task When_checking_store_that_exists()
     {
         var bucketName = $"brightertestbucket-{Guid.NewGuid()}";
-        var options = new OssLuggageOptions(AlibabaConfiguration.Endpoint,
+        var options = new OssLuggageOptions(AlibabaConfiguration.OssEndpoint,
             AlibabaConfiguration.AccessKey, AlibabaConfiguration.SecretKey)
         {
             BucketName = bucketName
@@ -33,10 +33,11 @@ public class LuggageStoreExistsTests
          var doesNotExist = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
              {
                  var bucketName = $"brightertestbucket-{Guid.NewGuid()}";
-                 var options = new OssLuggageOptions(AlibabaConfiguration.Endpoint,
+                 var options = new OssLuggageOptions(AlibabaConfiguration.OssEndpoint,
                     AlibabaConfiguration.AccessKey, AlibabaConfiguration.SecretKey)
                  { 
-                     BucketName = bucketName 
+                     BucketName = bucketName ,
+                     Strategy = StorageStrategy.Validate
                  };
         
                  var luggageStore = new OssLuggageStore(options); 

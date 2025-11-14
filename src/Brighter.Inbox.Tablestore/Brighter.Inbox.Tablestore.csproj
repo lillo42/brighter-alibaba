@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFrameworks>$(BrighterTargetFrameworks)</TargetFrameworks>
         <Nullable>enable</Nullable>
+        <Description>Alibaba Cloud Tablestore inbox implementation for Brighter. Provides message deduplication and idempotent message processing using Tablestore as the persistence layer for the inbox pattern.</Description>
+        <PackageTags>brighter;alibaba;tablestore;aliyun;inbox;deduplication;idempotency;message-processing;distributed-systems</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

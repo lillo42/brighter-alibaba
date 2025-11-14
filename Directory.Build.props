@@ -15,6 +15,10 @@
 
       <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 
+      <PackageProjectUrl>https://github.com/lillo42/brighter-alibaba</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/lillo42/brighter-alibaba</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+
       <!--  The .NET Version used in all projects -->
       <BrighterTargetFrameworks>netstandard2.0;net8.0;net9.0</BrighterTargetFrameworks>
       <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>

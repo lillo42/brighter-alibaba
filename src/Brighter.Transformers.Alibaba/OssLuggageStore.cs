@@ -198,7 +198,7 @@ public partial class OssLuggageStore(OssLuggageOptions options) : IAmAStoragePro
             var client = options.CreateStorageClient();
             return client.DoesObjectExist(options.BucketName, Key(claimCheck));
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }
