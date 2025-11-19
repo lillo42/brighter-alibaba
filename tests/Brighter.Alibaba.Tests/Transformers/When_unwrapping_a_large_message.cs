@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Brighter.Transformers.Alibaba.TestDoubles;
 using Paramore.Brighter;
-using Paramore.Brighter.Gcp.Tests.TestDoubles;
 using Paramore.Brighter.Observability;
 using Paramore.Brighter.Transforms.Transformers;
 

@@ -88,7 +88,7 @@ public class TablestoreInbox : IAmAnInboxSync, IAmAnInboxAsync
 
         var span = Tracer?.CreateDbSpan(
             new BoxSpanInfo(DbSystem.Firestore,
-                _configuration.Configuration.InstanceName,
+               _configuration.DatabaseName, 
                 BoxDbOperation.Get,
                 _table.Name,
                 dbAttributes: dbAttributes),

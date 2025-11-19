@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Brighter.Inbox.Tablestore\Brighter.Inbox.Tablestore.csproj" />
+    <ProjectReference Include="..\..\src\Brighter.Outbox.Tablestore\Brighter.Outbox.Tablestore.csproj" />
     <ProjectReference Include="..\..\src\Brighter.Transformers.Alibaba\Brighter.Transformers.Alibaba.csproj" />
   </ItemGroup>
 
