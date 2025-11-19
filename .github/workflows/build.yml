@@ -34,5 +34,10 @@ jobs:
       - name: Build 
         run: dotnet build -c Release
         
-#      - name: Tests 
-#        run: dotnet test -c Release --no-restore --no-build --logger GitHubActions 
+      - name: Tests 
+        env:
+          ALIBABA_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
+          ALIBABA_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
+          ALIBABA_OSS_ENDPOINT: ${{ secrets.ALIBABA_ENDPOINT }}
+          ALIBABA_TS_ENDPOINT: ${{ secrets.ALIBABA_TS_ENDPOINT }}
+        run: dotnet test -c Release --no-restore --no-build --logger GitHubActions 
