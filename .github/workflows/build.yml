@@ -1,0 +1,43 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/*.gitattributes'
+      - '**/*.gitignore'
+      - '**/*.md'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  
+
+jobs:
+  build:
+    name: build
+    runs-on: [ ubuntu-latest ]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+          show-progress: false
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        
+      - name: Build 
+        run: dotnet build -c Release
+        
+      - name: Tests 
+        env:
+          ALIBABA_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
+          ALIBABA_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
+          ALIBABA_OSS_ENDPOINT: ${{ secrets.ALIBABA_ENDPOINT }}
+          ALIBABA_TS_ENDPOINT: ${{ secrets.ALIBABA_TS_ENDPOINT }}
+        run: dotnet test -c Release --no-restore --no-build --logger GitHubActions 

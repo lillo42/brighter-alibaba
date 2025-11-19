@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+      <Authors>Rafael Andrade</Authors>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+      <PublishRepositoryUrl>true</PublishRepositoryUrl>
+      <!-- Optional: Embed source files that are not tracked by the source control manager to the PDB -->
+      <!-- This is useful if you generate files during the build -->
+      <EmbedUntrackedSources>true</EmbedUntrackedSources>
+      <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+      <DebugType>embedded</DebugType>
+
+      <LangVersion>latest</LangVersion>
+      <Nullable>enable</Nullable>
+
+      <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+
+      <PackageProjectUrl>https://github.com/lillo42/brighter-alibaba</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/lillo42/brighter-alibaba</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+
+      <!--  The .NET Version used in all projects -->
+      <BrighterTargetFrameworks>netstandard2.0;net8.0;net9.0</BrighterTargetFrameworks>
+      <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+   </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        
+        <PackageReference Include="MinVer">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+</Project>

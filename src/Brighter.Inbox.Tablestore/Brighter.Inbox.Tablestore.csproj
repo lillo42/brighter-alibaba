@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>$(BrighterTargetFrameworks)</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <Description>Alibaba Cloud Tablestore inbox implementation for Brighter. Provides message deduplication and idempotent message processing using Tablestore as the persistence layer for the inbox pattern.</Description>
+        <PackageTags>brighter;alibaba;tablestore;aliyun;inbox;deduplication;idempotency;message-processing;distributed-systems</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aliyun.TableStore.SDK" />
+      <PackageReference Include="Paramore.Brighter" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Brighter.Tablestore\Brighter.Tablestore.csproj" />
+    </ItemGroup>
+
+</Project>
