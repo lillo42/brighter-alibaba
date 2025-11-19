@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFrameworks>$(BrighterTargetFrameworks)</TargetFrameworks>
         <Nullable>enable</Nullable>
+        <Description>Core Alibaba Cloud Tablestore integration for Brighter. Provides common infrastructure and connection management for Tablestore-based inbox and outbox implementations.</Description>
+        <PackageTags>brighter;alibaba;tablestore;aliyun;infrastructure;distributed-systems</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

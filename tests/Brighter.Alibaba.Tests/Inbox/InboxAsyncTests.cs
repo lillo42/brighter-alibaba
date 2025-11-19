@@ -91,14 +91,14 @@ public abstract class InboxAsyncTests
     }
     
     [Test]
-    public void When_Getting_A_Non_Existent_Command_It_Should_Throw_RequestNotFoundException()
+    public async Task When_Getting_A_Non_Existent_Command_It_Should_Throw_RequestNotFoundException()
     {
         // Arrange
         var contextKey = Uuid.NewAsString();
         var commandId = Uuid.NewAsString();
         
         // Act & Assert
-        Assert.Throws<RequestNotFoundException<MyCommand>>(() => Inbox.GetAsync<MyCommand>(commandId, contextKey, null));
+        await Assert.ThrowsAsync<RequestNotFoundException<MyCommand>>(() => Inbox.GetAsync<MyCommand>(commandId, contextKey, null));
     }
     
     [Test]
@@ -109,7 +109,7 @@ public abstract class InboxAsyncTests
         await Inbox.AddAsync(command, Uuid.NewAsString(), null);
         
         // Act & Assert
-        Assert.Throws<RequestNotFoundException<MyCommand>>(() => Inbox.GetAsync<MyCommand>(command.Id, Uuid.NewAsString(), null));
+        await Assert.ThrowsAsync<RequestNotFoundException<MyCommand>>(() => Inbox.GetAsync<MyCommand>(command.Id, Uuid.NewAsString(), null));
     }
 
     [Test]

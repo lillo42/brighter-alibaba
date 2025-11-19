@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFrameworks>$(BrighterTargetFrameworks)</TargetFrameworks>
         <Nullable>enable</Nullable>
+        <Description>Alibaba Cloud Tablestore outbox implementation for Brighter. Provides reliable message publishing using Tablestore as the persistence layer for the transactional outbox pattern.</Description>
+        <PackageTags>brighter;alibaba;tablestore;aliyun;outbox;transactional-outbox;reliable-messaging;distributed-systems</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
