@@ -16,10 +16,6 @@ This library provides Brighter integrations for the following Alibaba Cloud serv
 - **Outbox Pattern**: Reliable message publishing with transactional guarantees
 - **Distributed Lock**: Distributed coordination and synchronization
 
-### 📨 Message Service (MNS)
-- **Simple Queue Service**: Reliable message queuing for asynchronous communication
-- Integration with Brighter's messaging infrastructure
-
 ## Installation
 
 Install the packages via NuGet:
@@ -50,6 +46,23 @@ var luggageStore = new OssLuggageStore(ossOptions);
 ### Tablestore Inbox/Outbox
 
 Configure Tablestore for inbox and outbox patterns to ensure reliable message processing and publishing.
+
+#### Tablestore Outbox Index Requirements
+
+For the outbox pattern to work correctly, you must create a secondary index on your Tablestore outbox table with the following configuration:
+
+- **Index Columns**: 
+  - `DispatchedAt` (Timestamp type)
+  - `Timestamp` (Timestamp type, ascending order)
+
+This index is required for efficiently querying and dispatching messages from the outbox.
+
+**Example using Alibaba Cloud Console:**
+1. Navigate to your Tablestore instance
+2. Select your outbox table
+3. Create a new secondary index
+4. Add `DispatchedAt` and `Timestamp` columns
+5. Set `Timestamp` to ascending order
 
 ## Requirements
 
